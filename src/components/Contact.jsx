@@ -15,7 +15,7 @@ const CONTACT_LINKS = [
   },
   {
     label: "GitHub",
-    value: "waleedjadoon",
+    value: "waleedabdullah",
     href: meta.github,
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -25,7 +25,7 @@ const CONTACT_LINKS = [
   },
   {
     label: "LinkedIn",
-    value: "waleedjadoon",
+    value: "waleedabdullah",
     href: meta.linkedin,
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

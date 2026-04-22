@@ -72,7 +72,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                 : "text-gray-900 hover:text-blue-600"
             }`}
           >
-            {"<WJ />"}
+            {"<WA />"}
           </a>
 
           {/* Desktop Links */}

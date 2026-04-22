@@ -51,6 +51,57 @@ const Experience = ({ theme }) => {
                       </li>
                     ))}
                   </ul>
+
+                  {/* Nested key projects */}
+                  {job.projects?.length > 0 && (
+                    <div className="mt-5 space-y-3">
+                      <p className={`text-xs font-semibold uppercase tracking-wider ${theme === "dark" ? "text-blue-400/80" : "text-blue-600/80"}`}>
+                        Key Projects
+                      </p>
+                      {job.projects.map((proj, pi) => (
+                        <div key={pi} className={`rounded-xl border p-4 ${theme === "dark" ? "bg-gray-950 border-gray-700" : "bg-gray-50 border-gray-200"}`}>
+                          {/* Project title + live link */}
+                          <div className="flex items-start justify-between gap-2 mb-1">
+                            <h4 className="text-sm font-bold">{proj.title}</h4>
+                            {proj.live && (
+                              <a href={proj.live} target="_blank" rel="noopener noreferrer" aria-label="Live site"
+                                className={`shrink-0 transition-colors ${theme === "dark" ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-500"}`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                              </a>
+                            )}
+                          </div>
+
+                          {/* Short description */}
+                          <p className={`text-xs leading-relaxed mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                            {proj.description}
+                          </p>
+
+                          {/* Highlight bullets */}
+                          <ul className="space-y-1.5 mb-3">
+                            {proj.highlights.map((h, hi) => (
+                              <li key={hi} className={`flex items-start gap-2 text-xs leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className={`mt-0.5 w-3.5 h-3.5 flex-shrink-0 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {h}
+                              </li>
+                            ))}
+                          </ul>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap gap-1.5">
+                            {proj.tags.map((tag) => (
+                              <span key={tag} className={`text-xs px-2 py-0.5 rounded-md font-mono ${theme === "dark" ? "bg-blue-500/10 text-blue-300" : "bg-blue-50 text-blue-700"}`}>
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </AnimateIn>
             </li>
