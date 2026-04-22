@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg:        #0f0f13;
+  --color-surface:   #1a1a2e;
+  --color-border:    #2a2a3e;
+  --color-text:      #e2e8f0;
+  --color-muted:     #94a3b8;
+  --color-accent:    #7c3aed;
+  --color-accent-lt: #a78bfa;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Offset anchor links so content is not hidden behind the sticky navbar */
+section[id] {
+  scroll-margin-top: 5rem;
+}
