@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { TypeAnimation } from 'react-type-animation';
 import useParticles from '../hooks/useParticles';
 import { meta } from '../data/data';
 import AnimateIn from './ui/AnimateIn';
@@ -32,14 +33,19 @@ export default function Hero({ theme }) {
           </p>
         </AnimateIn>
         <AnimateIn delay={100} direction="up">
-          <h1 className="text-5xl md:text-7xl font-bold text-text mb-4 leading-tight">
-            {meta.name}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text mb-6 leading-tight min-h-[1.2em] whitespace-nowrap">
+            <TypeAnimation
+              sequence={[
+                'Waleed Abdullah', 3000,
+                'Software Engineer', 2000,
+                'Full Stack Developer', 2000,
+              ]}
+              speed={{ type: 'keyStrokeDelayInMs', value: 100 }}
+              deletionSpeed={{ type: 'keyStrokeDelayInMs', value: 60 }}
+              repeat={Infinity}
+              cursor={true}
+            />
           </h1>
-        </AnimateIn>
-        <AnimateIn delay={200} direction="up">
-          <h2 className="text-xl md:text-2xl text-muted mb-6 font-light">
-            {meta.title}
-          </h2>
         </AnimateIn>
         <AnimateIn delay={300} direction="up">
           <p className="text-muted text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">

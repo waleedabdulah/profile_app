@@ -13,7 +13,7 @@ export default function App() {
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   return (
-    <div className={theme === 'dark' ? 'bg-gray-950 min-h-screen' : 'bg-gray-50 min-h-screen'}>
+    <div className={theme === 'dark' ? 'dark bg-gray-950 min-h-screen' : 'light bg-slate-50 min-h-screen'}>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero theme={theme} />

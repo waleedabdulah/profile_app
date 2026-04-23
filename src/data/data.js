@@ -2,7 +2,7 @@
 export const meta = {
   name:     "Waleed Abdullah",
   title:    "Software Engineer",
-  tagline:  "I build scalable web applications and love clean, maintainable code.",
+  tagline:  "Build scalable web applications and love clean, maintainable code.",
   email:    "waleedjadoon840@gmail.com",
   github:    "https://github.com/waleedabdulah/",
   linkedin:  "https://www.linkedin.com/in/abdullahwaleed/",
@@ -128,13 +128,29 @@ export const projects = [
     description: "This portfolio — a Three.js-powered single-page app with scroll animations, dark/light theme, and a contact form.",
     highlights:  [],
     tags:        ["React", "Three.js", "Tailwind CSS", "Vite"],
-    github:      "https://github.com/waleedjadoon/portfolio",
+    github:      "https://github.com/waleedabdulah/profile_app",
     live:        null,
   },
   {
     id:          2,
+    title:       "Funiro — E-Commerce Store",
+    description: "Full-stack e-commerce platform with a React storefront and Express REST API backend, powered by Supabase for auth, database, and real-time data.",
+    highlights:  [
+      "Built a responsive React storefront with product listing, filtering, cart management, and checkout flow.",
+      "Developed a RESTful Express API handling product CRUD, order processing, and user management.",
+      "Integrated Supabase for PostgreSQL database, authentication (JWT-based sessions), and file storage for product images.",
+      "Implemented protected routes and role-based access so only authenticated users can place orders.",
+      "Structured the backend with a clean separation of routes, controllers, and middleware for maintainability.",
+    ],
+    tags:        ["React", "Express", "Node.js", "Supabase", "PostgreSQL", "JavaScript"],
+    github:      "https://github.com/waleedabdulah/funiro",
+    live:        null,
+  },
+  {
+    id:          3,
     title:       "AI Healthcare Triage System",
     description: "AI-powered hospital triage that collects symptoms via conversational chat, classifies urgency using LLM + RAG, and routes patients to the correct department with appointment booking.",
+    github:      "https://github.com/waleedabdulah/healthCare_triage_routing_system",
     highlights:  [
       "Built a multi-node LangGraph StateGraph orchestrating symptom collection, RAG retrieval, urgency classification, department routing, and audit logging.",
       "Integrated ChromaDB vector store with sentence-transformers for retrieval-augmented generation from 11 clinical protocol documents.",
@@ -143,7 +159,6 @@ export const projects = [
       "Built dual React frontends: patient triage chat (SSE streaming) and nurse/admin dashboard with JWT-scoped department access control.",
     ],
     tags:        ["FastAPI", "LangGraph", "Groq AI", "ChromaDB", "React", "FastMCP", "SQLite", "Tailwind CSS"],
-    github:      null,
     live:        null,
   },
 ];

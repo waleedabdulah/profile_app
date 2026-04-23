@@ -27,40 +27,45 @@ const FallbackIcon = () => (
 );
 
 const Skills = ({ theme }) => {
+  const dark = theme === "dark";
   return (
     <section
       id="skills"
-      className={`py-20 px-4 sm:px-6 ${
-        theme === "dark" ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
-      }`}
+      className={`py-20 px-4 sm:px-6 ${dark ? "bg-gray-950 text-white" : "bg-slate-50 text-slate-900"}`}
     >
       <div className="max-w-4xl mx-auto">
 
-        {/* Section heading */}
         <AnimateIn direction="up">
           <div className="mb-12 text-center">
-            <p className={`text-sm font-medium tracking-widest uppercase mb-2 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
+            <p className={`text-sm font-medium tracking-widest uppercase mb-2 ${dark ? "text-blue-400" : "text-indigo-600"}`}>
               What I work with
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold">Skills</h2>
-            <div className={`mt-4 mx-auto h-1 w-16 rounded-full ${theme === "dark" ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-gradient-to-r from-blue-600 to-purple-600"}`} />
+            <div className={`mt-4 mx-auto h-1 w-16 rounded-full ${dark ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-gradient-to-r from-indigo-500 to-purple-500"}`} />
           </div>
         </AnimateIn>
 
-        {/* Skill categories — each card slides up, staggered */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {skills.map((group, i) => (
             <AnimateIn key={group.category} direction="up" delay={i * 110}>
-              <div className={`rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md ${theme === "dark" ? "bg-gray-900 border-gray-800 hover:border-blue-500/40" : "bg-white border-gray-100 hover:border-blue-300"}`}>
+              <div className={`rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md ${
+                dark
+                  ? "bg-gray-900 border-gray-800 hover:border-blue-500/40"
+                  : "bg-white border-slate-200 hover:border-indigo-300 hover:shadow-indigo-100/60"
+              }`}>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className={theme === "dark" ? "text-blue-400" : "text-blue-600"}>
+                  <span className={dark ? "text-blue-400" : "text-indigo-500"}>
                     {CATEGORY_ICONS[group.category] ?? <FallbackIcon />}
                   </span>
                   <h3 className="text-base font-bold">{group.category}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {group.items.map((skill) => (
-                    <span key={skill} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 ${theme === "dark" ? "bg-blue-500/10 text-blue-300 border border-blue-500/20 hover:bg-blue-500/20" : "bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100"}`}>
+                    <span key={skill} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                      dark
+                        ? "bg-blue-500/10 text-blue-300 border border-blue-500/20 hover:bg-blue-500/20"
+                        : "bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100"
+                    }`}>
                       {skill}
                     </span>
                   ))}

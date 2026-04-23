@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import { meta } from "../data/data";
 import AnimateIn from "./ui/AnimateIn";
 
 const CONTACT_LINKS = [
-  {
-    label: "Email",
-    value: meta.email,
-    href: `mailto:${meta.email}`,
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
+  // {
+  //   label: "Email",
+  //   value: meta.email,
+  //   href: `mailto:${meta.email}`,
+  //   icon: (
+  //     <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+  //       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  //     </svg>
+  //   ),
+  // },
   {
     label: "GitHub",
     value: "waleedabdullah",
@@ -25,7 +26,7 @@ const CONTACT_LINKS = [
   },
   {
     label: "LinkedIn",
-    value: "waleedabdullah",
+    value: "abdullahwaleed",
     href: meta.linkedin,
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -36,8 +37,10 @@ const CONTACT_LINKS = [
 ];
 
 const Contact = ({ theme }) => {
+  const dark = theme === "dark";
+  const formRef = useRef(null);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(null); // null | "sending" | "sent" | "error"
 
   const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -45,9 +48,12 @@ const Contact = ({ theme }) => {
     e.preventDefault();
     setStatus("sending");
     try {
-      const subject = encodeURIComponent(`Portfolio contact from ${form.name}`);
-      const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
-      window.location.href = `mailto:${meta.email}?subject=${subject}&body=${body}`;
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      );
       setStatus("sent");
       setForm({ name: "", email: "", message: "" });
     } catch {
@@ -56,29 +62,26 @@ const Contact = ({ theme }) => {
   };
 
   const inputClass = `w-full px-4 py-3 rounded-xl text-sm border outline-none transition-all duration-200 focus:ring-2 ${
-    theme === "dark"
+    dark
       ? "bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
-      : "bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
+      : "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20"
   }`;
 
   return (
     <section
       id="contact"
-      className={`py-20 px-4 sm:px-6 ${
-        theme === "dark" ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
-      }`}
+      className={`py-20 px-4 sm:px-6 ${dark ? "bg-gray-950 text-white" : "bg-slate-50 text-slate-900"}`}
     >
       <div className="max-w-3xl mx-auto">
 
-        {/* Section heading */}
         <AnimateIn direction="up">
           <div className="mb-12 text-center">
-            <p className={`text-sm font-medium tracking-widest uppercase mb-2 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
+            <p className={`text-sm font-medium tracking-widest uppercase mb-2 ${dark ? "text-blue-400" : "text-indigo-600"}`}>
               Let&apos;s talk
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold">Contact</h2>
-            <div className={`mt-4 mx-auto h-1 w-16 rounded-full ${theme === "dark" ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-gradient-to-r from-blue-600 to-purple-600"}`} />
-            <p className={`mt-4 text-sm sm:text-base ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+            <div className={`mt-4 mx-auto h-1 w-16 rounded-full ${dark ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-gradient-to-r from-indigo-500 to-purple-500"}`} />
+            <p className={`mt-4 text-sm sm:text-base ${dark ? "text-gray-400" : "text-slate-500"}`}>
               Have a project in mind or just want to say hi? My inbox is always open.
             </p>
           </div>
@@ -86,7 +89,6 @@ const Contact = ({ theme }) => {
 
         <div className="grid sm:grid-cols-5 gap-8">
 
-          {/* Contact links — slide in from left, staggered */}
           <div className="sm:col-span-2 flex flex-col gap-5">
             {CONTACT_LINKS.map(({ label, value, href, icon }, i) => (
               <AnimateIn key={label} direction="left" delay={i * 110}>
@@ -94,46 +96,80 @@ const Contact = ({ theme }) => {
                   href={href}
                   target={label !== "Email" ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] group ${theme === "dark" ? "bg-gray-900 border-gray-800 hover:border-blue-500/40" : "bg-white border-gray-100 hover:border-blue-300"}`}
+                  className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] group outline-none focus-visible:ring-2 ${
+                    dark
+                      ? "bg-gray-900 border-gray-700 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 focus-visible:ring-blue-500"
+                      : "bg-white border-slate-200 hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 focus-visible:ring-indigo-400"
+                  }`}
                 >
-                  <span className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${theme === "dark" ? "bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20" : "bg-blue-50 text-blue-600 group-hover:bg-blue-100"}`}>
+                  <span className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                    dark
+                      ? "bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-300"
+                      : "bg-indigo-50 text-indigo-500 group-hover:bg-indigo-100 group-hover:text-indigo-700"
+                  }`}>
                     {icon}
                   </span>
-                  <div>
-                    <p className={`text-xs font-medium mb-0.5 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`}>{label}</p>
-                    <p className={`text-sm font-semibold truncate max-w-[140px] ${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}>{value}</p>
+                  <div className="min-w-0">
+                    <p className={`text-xs font-medium mb-0.5 ${dark ? "text-gray-500" : "text-slate-400"}`}>{label}</p>
+                    <p className={`text-sm font-semibold truncate ${dark ? "text-white" : "text-slate-900"}`}>{value}</p>
                   </div>
+                  {/* Arrow indicator */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className={`ml-auto w-4 h-4 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 ${dark ? "text-blue-400" : "text-indigo-500"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </a>
               </AnimateIn>
             ))}
           </div>
 
-          {/* Contact form — slides in from right */}
           <AnimateIn direction="right" delay={150} className="sm:col-span-3">
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
-              className={`rounded-2xl border p-6 shadow-sm flex flex-col gap-4 h-full ${theme === "dark" ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}
+              className={`rounded-2xl border p-6 shadow-sm flex flex-col gap-4 h-full ${
+                dark
+                  ? "bg-gray-900 border-gray-800"
+                  : "bg-white border-slate-200"
+              }`}
             >
               <div>
-                <label htmlFor="name" className={`block text-xs font-medium mb-1.5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Your Name</label>
+                <label htmlFor="name" className={`block text-xs font-medium mb-1.5 ${dark ? "text-gray-400" : "text-slate-600"}`}>Your Name</label>
                 <input id="name" name="name" type="text" required placeholder="John Doe" value={form.name} onChange={handleChange} className={inputClass} />
               </div>
               <div>
-                <label htmlFor="email" className={`block text-xs font-medium mb-1.5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Email Address</label>
+                <label htmlFor="email" className={`block text-xs font-medium mb-1.5 ${dark ? "text-gray-400" : "text-slate-600"}`}>Email Address</label>
                 <input id="email" name="email" type="email" required placeholder="john@example.com" value={form.email} onChange={handleChange} className={inputClass} />
               </div>
               <div>
-                <label htmlFor="message" className={`block text-xs font-medium mb-1.5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Message</label>
+                <label htmlFor="message" className={`block text-xs font-medium mb-1.5 ${dark ? "text-gray-400" : "text-slate-600"}`}>Message</label>
                 <textarea id="message" name="message" rows={5} required placeholder="Tell me about your project or just say hi!" value={form.message} onChange={handleChange} className={`${inputClass} resize-none`} />
               </div>
 
-              {status === "sent" && <p className="text-sm text-green-500 font-medium">Your email client should have opened. Talk soon!</p>}
-              {status === "error" && <p className="text-sm text-red-500 font-medium">Something went wrong. Please email me directly.</p>}
+              {status === "sent" && (
+                <p className="text-sm text-green-600 font-medium flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Message sent! I'll get back to you soon.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="text-sm text-red-500 font-medium flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Something went wrong. Email me at {meta.email}
+                </p>
+              )}
 
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className={`mt-1 w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed shadow-md ${theme === "dark" ? "bg-blue-500 hover:bg-blue-400 text-white shadow-blue-500/30" : "bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30"}`}
+                className={`mt-1 w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed shadow-md ${
+                  dark
+                    ? "bg-blue-500 hover:bg-blue-400 text-white shadow-blue-500/30"
+                    : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-500/25"
+                }`}
               >
                 {status === "sending" ? "Opening mail client…" : "Send Message"}
               </button>
@@ -143,8 +179,7 @@ const Contact = ({ theme }) => {
         </div>
       </div>
 
-      {/* Footer */}
-      <p className={`mt-16 text-center text-xs ${theme === "dark" ? "text-gray-600" : "text-gray-400"}`}>
+      <p className={`mt-16 text-center text-xs ${dark ? "text-gray-600" : "text-slate-400"}`}>
         &copy; {new Date().getFullYear()} {meta.name}. Built with React &amp; Tailwind CSS.
       </p>
     </section>
