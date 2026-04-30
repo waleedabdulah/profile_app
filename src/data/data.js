@@ -12,7 +12,7 @@ export const meta = {
 // ─── About ────────────────────────────────────────────────────────────────────
 export const about = {
   bio: [
-    "I'm a software engineer passionate about crafting fast, accessible, and beautiful digital experiences. I specialise in full-stack JavaScript development with a focus on React on the frontend and Node.js on the backend.",
+    "Full-Stack Engineer with hands-on industry experience building scalable, production-ready web applications — from intuitive interfaces to robust backend architectures. I specialize in the MERN stack and increasingly work at the intersection of software engineering and AI, integrating intelligent capabilities into real-world products. I care about clean code, meaningful UX, and solutions that actually hold up in production.",
     "When I'm not pushing pixels or debugging APIs, you'll find me contributing to open-source projects, writing technical articles, or exploring the latest in cloud-native architecture.",
   ],
   photoUrl: null, // set to "/profile-photo.jpg" once you add your photo

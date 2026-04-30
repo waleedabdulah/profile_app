@@ -69,7 +69,11 @@ const About = ({ theme }) => {
             <AnimateIn direction="up" delay={360}>
               <div className="pt-2">
                 <a
-                  href={`mailto:${meta.email}`}
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-md ${
                     dark
                       ? "bg-blue-500 hover:bg-blue-400 text-white shadow-blue-500/30"
