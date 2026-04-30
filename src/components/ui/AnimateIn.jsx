@@ -1,22 +1,14 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, startTransition } from 'react';
 
-const HIDDEN_CLASSES = {
-  up:    'opacity-0 translate-y-10',
-  down:  'opacity-0 -translate-y-10',
-  left:  'opacity-0 -translate-x-10',
-  right: 'opacity-0 translate-x-10',
+const HIDDEN = {
+  up:    { opacity: 0, transform: 'translateY(40px)' },
+  down:  { opacity: 0, transform: 'translateY(-40px)' },
+  left:  { opacity: 0, transform: 'translateX(-40px)' },
+  right: { opacity: 0, transform: 'translateX(40px)' },
 };
 
-/**
- * Wraps children in a div that slides + fades in when it enters the viewport.
- * Fires once — does not repeat on scroll up/down.
- *
- * Props:
- *   delay     – ms stagger offset (default 0)
- *   direction – 'up' | 'down' | 'left' | 'right' (default 'up')
- *   className – forwarded to the wrapper div
- *   threshold – IntersectionObserver threshold (default 0.12)
- */
+const VISIBLE = { opacity: 1, transform: 'translate(0,0)' };
+
 export default function AnimateIn({
   children,
   delay = 0,
@@ -34,8 +26,8 @@ export default function AnimateIn({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect(); // fire once only
+          startTransition(() => setVisible(true));
+          observer.disconnect();
         }
       },
       { threshold }
@@ -48,12 +40,15 @@ export default function AnimateIn({
   return (
     <div
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        visible
-          ? 'opacity-100 translate-x-0 translate-y-0'
-          : HIDDEN_CLASSES[direction]
-      } ${className}`}
+      style={{
+        transitionProperty: 'opacity, transform',
+        transitionDuration: '600ms',
+        transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        transitionDelay: `${delay}ms`,
+        willChange: visible ? 'auto' : 'opacity, transform',
+        ...(visible ? VISIBLE : HIDDEN[direction]),
+      }}
+      className={className}
     >
       {children}
     </div>

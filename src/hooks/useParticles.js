@@ -13,7 +13,7 @@ export default function useParticles(canvasRef) {
     const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
     camera.position.z = 3;
 
-    const COUNT = 1500;
+    const COUNT = 700;
     const positions = new Float32Array(COUNT * 3);
     for (let i = 0; i < COUNT * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 10;
@@ -43,7 +43,10 @@ export default function useParticles(canvasRef) {
     window.addEventListener('resize', onResize);
 
     let frameId;
+    let running = true;
+
     const animate = () => {
+      if (!running) return;
       frameId = requestAnimationFrame(animate);
       particles.rotation.y += 0.0004;
       particles.rotation.x += 0.0002;
@@ -51,8 +54,25 @@ export default function useParticles(canvasRef) {
     };
     animate();
 
+    // Pause rendering when canvas scrolls out of view
+    const visibility = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          running = true;
+          animate();
+        } else {
+          running = false;
+          cancelAnimationFrame(frameId);
+        }
+      },
+      { threshold: 0 }
+    );
+    visibility.observe(canvas);
+
     return () => {
+      running = false;
       cancelAnimationFrame(frameId);
+      visibility.disconnect();
       window.removeEventListener('resize', onResize);
       geometry.dispose();
       material.dispose();

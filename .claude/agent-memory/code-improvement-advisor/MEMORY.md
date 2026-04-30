@@ -1,0 +1,1 @@
+- [User Profile](user_profile.md) — React/Vite portfolio site; intermediate-senior React skills; stack is Tailwind, Three.js, EmailJS, react-type-animation

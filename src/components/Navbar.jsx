@@ -17,25 +17,31 @@ const Navbar = ({ theme, toggleTheme }) => {
 
   // Detect scroll for navbar background
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    let rafId = null;
 
-      // Update active section based on scroll position
-      const sections = NAV_LINKS.map((link) => link.href.replace("#", ""));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 100) {
+    const handleScroll = () => {
+      // Throttle via requestAnimationFrame — at most one DOM read per frame
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setScrolled(window.scrollY > 20);
+
+        const sections = NAV_LINKS.map((link) => link.href.replace("#", ""));
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sections[i]);
+          if (el && el.getBoundingClientRect().top <= 100) {
             setActiveSection(sections[i]);
             break;
           }
         }
-      }
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const handleNavClick = (href) => {
